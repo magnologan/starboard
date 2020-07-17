@@ -43,7 +43,7 @@ var (
 	}
 ]`
 
-	sampleReport = starboard.VulnerabilityReport{
+	sampleReport = starboard.Vulnerability{
 		Scanner: starboard.Scanner{
 			Name:    "Trivy",
 			Vendor:  "Aqua Security",
@@ -97,7 +97,7 @@ func TestConverter_Convert(t *testing.T) {
 		imageRef       string
 		input          string
 		expectedError  error
-		expectedReport starboard.VulnerabilityReport
+		expectedReport starboard.Vulnerability
 	}{
 		{
 			name:     "Should convert vulnerability report in JSON format when input is noisy",
@@ -119,7 +119,7 @@ func TestConverter_Convert(t *testing.T) {
 			input: `2020-06-21T23:10:15.162+0200	WARN	OS is not detected and vulnerabilities in OS packages are not detected.
 null`,
 			expectedError: nil,
-			expectedReport: starboard.VulnerabilityReport{
+			expectedReport: starboard.Vulnerability{
 				Scanner: starboard.Scanner{
 					Name:    "Trivy",
 					Vendor:  "Aqua Security",

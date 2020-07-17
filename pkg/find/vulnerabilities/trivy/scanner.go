@@ -67,7 +67,7 @@ func (s *Scanner) Scan(ctx context.Context, workload kube.Object) (reports vulne
 	return
 }
 
-func (s *Scanner) ScanByPodSpec(ctx context.Context, workload kube.Object, spec core.PodSpec) (map[string]sec.VulnerabilityReport, error) {
+func (s *Scanner) ScanByPodSpec(ctx context.Context, workload kube.Object, spec core.PodSpec) (map[string]sec.Vulnerability, error) {
 	klog.V(3).Infof("Scanning with options: %+v", s.opts)
 	job, err := s.PrepareScanJob(ctx, workload, spec)
 	if err != nil {
@@ -241,7 +241,7 @@ func (s *Scanner) PrepareScanJob(ctx context.Context, workload kube.Object, spec
 }
 
 func (s *Scanner) GetVulnerabilityReportsByScanJob(ctx context.Context, job *batch.Job) (reports vulnerabilities.WorkloadVulnerabilities, err error) {
-	reports = make(map[string]sec.VulnerabilityReport)
+	reports = make(map[string]sec.Vulnerability)
 
 	var containerImagesAsJSON string
 	var ok bool

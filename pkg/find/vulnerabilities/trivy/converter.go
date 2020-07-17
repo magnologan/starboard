@@ -15,7 +15,7 @@ import (
 // Convert converts the vulnerabilities model used by Trivy
 // to a generic model defined by the Custom Security Resource Specification.
 type Converter interface {
-	Convert(imageRef string, reader io.Reader) (starboard.VulnerabilityReport, error)
+	Convert(imageRef string, reader io.Reader) (starboard.Vulnerability, error)
 }
 
 type converter struct {
@@ -27,7 +27,7 @@ func NewConverter() Converter {
 	return &converter{}
 }
 
-func (c *converter) Convert(imageRef string, reader io.Reader) (report starboard.VulnerabilityReport, err error) {
+func (c *converter) Convert(imageRef string, reader io.Reader) (report starboard.Vulnerability, err error) {
 	var scanReports []ScanReport
 	skipReader, err := c.skippingNoisyOutputReader(reader)
 	if err != nil {
@@ -60,7 +60,7 @@ func (c *converter) skippingNoisyOutputReader(input io.Reader) (io.Reader, error
 	return strings.NewReader(inputAsString), nil
 }
 
-func (c *converter) convert(imageRef string, reports []ScanReport) (starboard.VulnerabilityReport, error) {
+func (c *converter) convert(imageRef string, reports []ScanReport) (starboard.Vulnerability, error) {
 	vulnerabilities := make([]starboard.VulnerabilityItem, 0)
 
 	for _, report := range reports {
@@ -81,10 +81,10 @@ func (c *converter) convert(imageRef string, reports []ScanReport) (starboard.Vu
 
 	registry, artifact, err := c.parseImageRef(imageRef)
 	if err != nil {
-		return starboard.VulnerabilityReport{}, err
+		return starboard.Vulnerability{}, err
 	}
 
-	return starboard.VulnerabilityReport{
+	return starboard.Vulnerability{
 		Scanner: starboard.Scanner{
 			Name:    "Trivy",
 			Vendor:  "Aqua Security",

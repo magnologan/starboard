@@ -15,12 +15,12 @@ import (
 )
 
 var (
-	vulnerabilityReport01 = v1alpha1.VulnerabilityReport{
+	vulnerabilityReport01 = v1alpha1.Vulnerability{
 		Vulnerabilities: []v1alpha1.VulnerabilityItem{
 			{VulnerabilityID: "CVE-2020-1832"},
 		},
 	}
-	vulnerabilityReport02 = v1alpha1.VulnerabilityReport{
+	vulnerabilityReport02 = v1alpha1.Vulnerability{
 		Vulnerabilities: []v1alpha1.VulnerabilityItem{
 			{VulnerabilityID: "CVE-2019-8211"},
 		},
@@ -28,9 +28,9 @@ var (
 )
 
 func TestReadWriter_Read(t *testing.T) {
-	clientset := fake.NewSimpleClientset(&v1alpha1.Vulnerability{
+	clientset := fake.NewSimpleClientset(&v1alpha1.VulnerabilityReport{
 		TypeMeta: meta.TypeMeta{
-			Kind:       "Vulnerability",
+			Kind:       "VulnerabilityReport",
 			APIVersion: "v1alpha1",
 		},
 		ObjectMeta: meta.ObjectMeta{
@@ -44,9 +44,9 @@ func TestReadWriter_Read(t *testing.T) {
 			},
 		},
 		Report: vulnerabilityReport01,
-	}, &v1alpha1.Vulnerability{
+	}, &v1alpha1.VulnerabilityReport{
 		TypeMeta: meta.TypeMeta{
-			Kind:       "Vulnerability",
+			Kind:       "VulnerabilityReport",
 			APIVersion: "v1alpha1",
 		},
 		ObjectMeta: meta.ObjectMeta{
@@ -60,9 +60,9 @@ func TestReadWriter_Read(t *testing.T) {
 			},
 		},
 		Report: vulnerabilityReport02,
-	}, &v1alpha1.Vulnerability{
+	}, &v1alpha1.VulnerabilityReport{
 		TypeMeta: meta.TypeMeta{
-			Kind:       "Vulnerability",
+			Kind:       "VulnerabilityReport",
 			APIVersion: "v1alpha1",
 		},
 		ObjectMeta: meta.ObjectMeta{
@@ -75,7 +75,7 @@ func TestReadWriter_Read(t *testing.T) {
 				kube.LabelContainerName:     "my-sts-container",
 			},
 		},
-		Report: v1alpha1.VulnerabilityReport{},
+		Report: v1alpha1.Vulnerability{},
 	})
 
 	reports, err := NewReadWriter(clientset).Read(context.TODO(), kube.Object{

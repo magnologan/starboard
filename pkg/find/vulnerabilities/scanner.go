@@ -11,7 +11,7 @@ import (
 
 // WorkloadVulnerabilities holds VulnerabilityReports for each container
 // of a Kubernetes workload.
-type WorkloadVulnerabilities map[string]starboard.VulnerabilityReport
+type WorkloadVulnerabilities map[string]starboard.Vulnerability
 
 // ScannerAsync defines methods for a vulnerability scanner which is
 // run as a Kubernetes Job.

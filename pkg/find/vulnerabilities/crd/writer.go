@@ -35,8 +35,8 @@ func (s *ReadWriter) Write(ctx context.Context, workload kube.Object, reports vu
 	return
 }
 
-func (s *ReadWriter) createVulnerability(ctx context.Context, workload kube.Object, container string, report starboard.VulnerabilityReport) (err error) {
-	_, err = s.client.AquasecurityV1alpha1().Vulnerabilities(workload.Namespace).Create(ctx, &starboard.Vulnerability{
+func (s *ReadWriter) createVulnerability(ctx context.Context, workload kube.Object, container string, report starboard.Vulnerability) (err error) {
+	_, err = s.client.AquasecurityV1alpha1().Vulnerabilities(workload.Namespace).Create(ctx, &starboard.VulnerabilityReport{
 		ObjectMeta: meta.ObjectMeta{
 			Name: fmt.Sprintf(uuid.New().String()),
 			Labels: map[string]string{
@@ -63,7 +63,7 @@ func (s *ReadWriter) Read(ctx context.Context, workload kube.Object) (vulnerabil
 	if err != nil {
 		return vulnerabilities.WorkloadVulnerabilities{}, err
 	}
-	reports := make(map[string]starboard.VulnerabilityReport)
+	reports := make(map[string]starboard.Vulnerability)
 	for _, item := range list.Items {
 		if container, ok := item.Labels[kube.LabelContainerName]; ok {
 			reports[container] = item.Report
